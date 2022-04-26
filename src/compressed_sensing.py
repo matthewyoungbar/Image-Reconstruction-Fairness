@@ -21,7 +21,7 @@ def main(hparams):
     # get estimator
     estimator = utils.get_estimator(hparams, hparams.model_type)
 
-    # set up folders, etc for checkpointing 
+    # set up folders, etc for checkpointing
     utils.setup_checkpointing(hparams)
 
     # get saved results
@@ -39,7 +39,7 @@ def main(hparams):
             # If lazy, first check if the image has already been
             # saved before . If yes, then skip this image.
             save_path = utils.get_save_path(hparams, key)
-            is_saved = os.path.isfile(save_path) 
+            is_saved = os.path.isfile(save_path)
             if is_saved:
                 continue
 
@@ -55,7 +55,7 @@ def main(hparams):
         noise_batch = utils.get_noise(hparams)
         y_batch = utils.get_measurements(x_batch, A, noise_batch, hparams)
 
-        # Construct estimates 
+        # Construct estimates
         x_hat_batch, z_hat_batch, likelihood_batch = estimator(A, y_batch, hparams)
 
         for i, key in enumerate(x_batch_dict.keys()):
@@ -77,7 +77,7 @@ def main(hparams):
         # Checkpointing
         if (not hparams.debug) and ((key+1) % hparams.checkpoint_iter == 0):
             utils.checkpoint(x_hats_dict, measurement_losses, l2_losses, z_hats, likelihoods, hparams)
-            x_hats_dict = {} 
+            x_hats_dict = {}
             print('\nProcessed and saved first ', key+1, 'images\n')
 
         x_batch_dict = {}
@@ -198,7 +198,7 @@ if __name__ == '__main__':
 
     if HPARAMS.net == 'ncsnv2':
         with open(HPARAMS.ncsnv2_configs_file, 'r') as f:
-            HPARAMS.ncsnv2_configs = yaml.load(f)
+            HPARAMS.ncsnv2_configs = yaml.full_load(f)
         HPARAMS.ncsnv2_configs['sampling']['step_lr'] = HPARAMS.learning_rate
         HPARAMS.ncsnv2_configs['sampling']['n_steps_each'] = int(HPARAMS.T)
         HPARAMS.ncsnv2_configs['model']['sigma_begin'] = int(HPARAMS.sigma_init)
@@ -218,7 +218,7 @@ if __name__ == '__main__':
         HPARAMS.num_measurements = np.prod(HPARAMS.y_shape[1:])
 
 
-    from utils import view_image 
+    from utils import view_image
 
     if HPARAMS.mloss_weight < 0:
         HPARAMS.mloss_weight = None
@@ -236,5 +236,3 @@ if __name__ == '__main__':
         HPARAMS.max_update_iter = int(HPARAMS.T * HPARAMS.L)
 
     main(HPARAMS)
-
-

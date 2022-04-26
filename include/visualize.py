@@ -3,7 +3,7 @@ from torch.autograd import Variable
 import torch
 import torch.optim
 import numpy as np
-from collections import Iterable
+from collections.abc import Iterable
 
 
 dtype = torch.cuda.FloatTensor
@@ -37,7 +37,7 @@ def apply_until(net_input,net,n = 100):
 from math import ceil
 
 
-# given a lists of images as np-arrays, plot them as a row# given 
+# given a lists of images as np-arrays, plot them as a row# given
 def plot_image_grid(imgs,nrows=10):
     ncols = ceil( len(imgs)/nrows )
     nrows = min(nrows,len(imgs))
@@ -55,4 +55,3 @@ def save_tensor(out,filename,nrows=8):
     fig = plot_image_grid(imgs,nrows=nrows)
     plt.savefig(filename)
     plt.close()
-

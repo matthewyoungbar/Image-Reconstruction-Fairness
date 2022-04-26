@@ -71,6 +71,8 @@ def get_metrics(expt_dir):
 def get_expt_metrics(expt_dirs):
     expt_metrics = {}
     for expt_dir in expt_dirs:
+        expt_dir = expt_dir.replace("\\", "/")
+        print(expt_dir)
         metrics = get_metrics(expt_dir)
         expt_metrics[expt_dir] = metrics
     return expt_metrics
@@ -85,6 +87,7 @@ def get_nested_value(dic, field):
 
 def find_best(pattern, criterion, retrieve_list):
     dirs = glob.glob(pattern)
+    print("dirs:", dirs)
     metrics = get_expt_metrics(dirs)
     best_merit = 1e10
     answer = [None]*len(retrieve_list)

@@ -7,8 +7,9 @@ import skimage.color as color
 from skimage.restoration import (denoise_wavelet, estimate_sigma)
 from skimage import data, img_as_float
 from skimage.util import random_noise
-from skimage.measure import compare_psnr
-from include import * 
+# from skimage.measure import compare_psnr
+# from skimage.metrics import peak_signal_noise_ratio
+from include import *
 
 def _wavelet_threshold(image, wavelet, ncoeff = None, threshold=None, mode='soft', wavelet_levels=None):
 
@@ -31,22 +32,22 @@ def _wavelet_threshold(image, wavelet, ncoeff = None, threshold=None, mode='soft
     coeffs = pywt.wavedecn(image, wavelet=wavelet, level=wavelet_levels)
     # Detail coefficients at each decomposition level
     dcoeffs = coeffs[1:]
-    
+
     a = []
     for level in dcoeffs:
         for key in level:
             a += [np.ndarray.flatten(level[key])]
     a = np.concatenate(a)
-    a = np.sort( np.abs(a) )    
+    a = np.sort( np.abs(a) )
 
     sh = coeffs[0].shape
     basecoeffs = sh[0]*sh[1]
     threshold = a[- (ncoeff - basecoeffs)]
-    
+
     # A single threshold for all coefficient arrays
     denoised_detail = [{key: pywt.threshold(level[key],value=threshold,
                                 mode=mode) for key in level} for level in dcoeffs]
-   
+
     denoised_coeffs = [coeffs[0]] + denoised_detail
     return pywt.waverecn(denoised_coeffs, wavelet)[original_extent]
 
@@ -56,8 +57,8 @@ def denoise_wavelet(image, ncoeff=None, wavelet='db1', mode='hard',
                     convert2ycbcr=False):
 
     image = img_as_float(image)
-    
-    
+
+
     if multichannel:
         if convert2ycbcr:
             out = color.rgb2ycbcr(image)
@@ -85,5 +86,3 @@ def denoise_wavelet(image, ncoeff=None, wavelet='db1', mode='hard',
 
     clip_range = (-1, 1) if image.min() < 0 else (0, 1)
     return np.clip(out, *clip_range)
-
-

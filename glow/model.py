@@ -1,8 +1,11 @@
 import tensorflow as tf
+# import tensorflow.compat.v1 as tf
+# tf.disable_v2_behavior()
 import numpy as np
 from PIL import Image
 from tensorflow.core.framework import graph_pb2
 import copy
+# import graph_def_editor as ge
 import tensorflow.contrib.graph_editor as ge
 import os
 from threading import Lock
@@ -184,5 +187,3 @@ def get_model(model_path, batch_size, z_sdev):
     feed_dict = {}
     update_feed(feed_dict, batch_size)
     return dec_x, dec_eps, feed_dict, run
-
-

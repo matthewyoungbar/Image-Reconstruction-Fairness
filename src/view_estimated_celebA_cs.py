@@ -12,8 +12,8 @@ class Hparams(object):
     """Hyperparameters"""
     def __init__(self):
         self.input_type = 'full-input'
-        self.input_path_pattern = './test_images/celebA'
-        self.input_path = './test_images/celebA'
+        self.input_path_pattern = '../test_images/celebA'
+        self.input_path = '../test_images/celebA'
         self.num_input_images = 30
         self.image_matrix = 0
         self.image_shape = (3,256,256)
@@ -57,10 +57,10 @@ def main():
         return format(f, '.4f').rstrip('0').rstrip('.')
     legend_base_regexs = [
         ('MAP',
-    f'./estimated/celebA/full-input/circulant/{hparams.noise_std}/',
+    f'../estimated/celebA/full-input/circulant/{hparams.noise_std}/',
      '/glow/map/None_None*'),
         ('Langevin',
-    f'./estimated*/celebA/full-input/circulant/{hparams.noise_std}/',
+    f'../estimated*/celebA/full-input/circulant/{hparams.noise_std}/',
      '/glow/*langevin/None*'),
                  ]
     retrieve_list = [['l2', 'mean'], ['l2', 'std']]
@@ -69,7 +69,9 @@ def main():
         patterns_images, patterns_l2 = [], []
         exists = True
         for legend, base, regex in legend_base_regexs:
-            keys = map(int_or_float, [a.split('/')[-1] for a in glob.glob(base + '*')])
+            print(glob.glob(base+'*'))
+            keys = map(int_or_float, [a.split('/')[-1].split('\\')[-1] for a in glob.glob(base + '*')])
+            print(keys)
             list_keys = [key for key in keys]
             if num_measurements not in list_keys:
                 exists = False
@@ -79,7 +81,7 @@ def main():
                 criterion = ['l2', 'mean']
             else:
                 criterion = ['likelihood', 'mean']
-
+            print(pattern)
             _, best_dir = find_best(pattern, criterion, retrieve_list)
             pattern_images = best_dir + '/images/{:06d}.png'
             pattern_l2 = best_dir + '/l2_losses.pkl'
