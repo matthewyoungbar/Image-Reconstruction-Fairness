@@ -1,3 +1,11 @@
+# Fairness in Image Reconstruction
+Contains code from https://github.com/ajiljalal/code-cs-fairness and https://github.com/adamian98/pulse
+
+My image evaluation code can be found in /Face Evaluation
+face_analysis.py and face_analysis_pulse.py can be used to generate Deepface data for input and output.
+face_data.json contains Deepface result for all valid FFHQ images. face_data_out_pulse.json contains data from images run trough PULSE.
+
+
 # Instance-Optimal Compressed Sensing via Posterior Sampling & Fairness for Image Generation with Uncertain Sensitive Attributes
 
 This repo contains code for our papers [Instance-Optimal Compressed Sensing via Posterior Sampling](https://arxiv.org/abs/2106.11438) & [Fairness for Image Generation with Uncertain Sensitive Attributes]()
